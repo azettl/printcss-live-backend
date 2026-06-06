@@ -147,7 +147,7 @@ def create_app(allowed_origin=None):
             elif tool == 'vivliostyle':
                 error, output = run_command(['vivliostyle', 'build', input_path, '-o', output_path])
             elif tool == 'pagedjs':
-                error, output = run_command(['pagedjs-cli', input_path, '-o', output_path])
+                error, output = run_command(['pagedjs-cli', input_path, '-o', output_path, '--browserArgs', '--no-sandbox,--disable-setuid-sandbox'])
             elif tool == 'weasyprint':
                 error, output = run_command(['weasyprint', input_path, output_path])
             elif tool == 'ahformatter':
