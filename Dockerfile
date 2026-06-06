@@ -1,12 +1,12 @@
 # Use Ubuntu as the base image
-FROM ubuntu:25.10
+FROM ubuntu:26.04
 
 # Avoid prompts from apt
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Set Prince version and filename variables
-ENV PRINCE_VERSION=15.4.1-1
-ENV PRINCE_FILENAME=prince_${PRINCE_VERSION}_ubuntu24.04_amd64.deb
+ENV PRINCE_VERSION=16.2-1
+ENV PRINCE_FILENAME=prince_${PRINCE_VERSION}_ubuntu26.04_amd64.deb
 
 # Define build argument for AH Formatter file and BFO Publisher file
 ARG AH_FORMATTER_FILE
@@ -42,6 +42,7 @@ RUN apt-get update && apt-get install -y \
     libasound2t64 \
     libpango-1.0-0 \
     libcairo2 \
+    libaom3 \
     && rm -rf /var/lib/apt/lists/*
 
 # Create a non-root user
@@ -100,14 +101,13 @@ RUN wget -O pdfreactor.zip "https://www.pdfreactor.com/download/get/?product=pdf
     && mv PDFreactor /opt/
 
 # Copy and install AH Formatter if the file is provided
-COPY ${AH_FORMATTER_FILE} /tmp/ahformatter.rpm.gz
-RUN if [ -f /tmp/ahformatter.rpm.gz ]; then \
+COPY ${AH_FORMATTER_FILE} /tmp/ahformatter.rpm
+RUN if [ -f /tmp/ahformatter.rpm ]; then \
         apt-get update && apt-get install -y \
         # Dependencies for AH Formatter
         alien \ 
         && rm -rf /var/lib/apt/lists/* && \
         cd /tmp && \
-        gunzip ahformatter.rpm.gz && \
         alien --scripts --to-deb ahformatter.rpm && \
         dpkg -i ahformatter*.deb && \
         ln -s $(find /usr -maxdepth 1 -type d -name "AHFormatter*" | sort -V | tail -n1) /opt/AHFormatter && \
@@ -125,17 +125,17 @@ RUN if [ -n "${BFO_PUBLISHER_FILE}" ] && [ -f "/tmp/$(basename ${BFO_PUBLISHER_F
 COPY ${TYPESETSH_FILE} /tmp/
 RUN if [ -n "${TYPESETSH_FILE}" ] && [ -f "/tmp/$(basename ${TYPESETSH_FILE})" ]; then \
         apt-get update && apt-get install -y \
-        # Install PHP 8.3 and required extensions
-        php8.3 \
-        php8.3-cli \
-        php8.3-curl \
-        php8.3-dom \
-        php8.3-exif \
-        php8.3-fileinfo \
-        php8.3-gd \
-        php8.3-iconv \
-        php8.3-xml \
-        php8.3-simplexml \
+        # Install PHP 8.5 and required extensions
+        php8.5 \
+        php8.5-cli \
+        php8.5-curl \
+        php8.5-dom \
+        php8.5-exif \
+        php8.5-fileinfo \
+        php8.5-gd \
+        php8.5-iconv \
+        php8.5-xml \
+        php8.5-simplexml \
         && rm -rf /var/lib/apt/lists/* && \
         mv "/tmp/$(basename ${TYPESETSH_FILE})" /opt/typesetsh.phar && \
         chmod +x /opt/typesetsh.phar; \

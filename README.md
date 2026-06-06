@@ -14,27 +14,27 @@ To build the Docker container for this service, follow these steps:
 
 2. Build the Docker image:
    ```
-   docker build -t printcss-live-backend .
+   docker build --platform linux/amd64 -t printcss-live-backend .
    ```
 
    With AH Formatter (needs to be an *.rpm.gz file):
    ```
-   docker build --build-arg AH_FORMATTER_FILE=AHFormatter.rpm.gz -t printcss-live-backend .
+   docker build --build-arg AH_FORMATTER_FILE=AHFormatter.rpm --platform linux/amd64 -t printcss-live-backend .
    ```
     
    With BFO Publisher (needs to be the bfopublisher-bundle-*.jar file):
    ```
-   docker build --build-arg BFO_PUBLISHER_FILE=bfopublisher-bundle-1.3.jar -t printcss-live-backend .
+   docker build --build-arg BFO_PUBLISHER_FILE=bfopublisher-bundle-1.3.jar --platform linux/amd64 -t printcss-live-backend .
    ```
 
    With Typeset.sh (needs to be a *.phar file):
    ```
-   docker build --build-arg TYPESETSH_FILE=typesetsh.phar -t printcss-live-backend .
+   docker build --build-arg TYPESETSH_FILE=typesetsh.phar --platform linux/amd64 -t printcss-live-backend .
    ```
 
    With all renderes:
    ```
-   docker build --build-arg AH_FORMATTER_FILE=AHFormatter.rpm.gz --build-arg BFO_PUBLISHER_FILE=bfopublisher-bundle-1.3.jar --build-arg TYPESETSH_FILE=typesetsh.phar -t printcss-live-backend .
+   docker build --build-arg AH_FORMATTER_FILE=AHFormatter.rpm --build-arg BFO_PUBLISHER_FILE=bfopublisher-bundle-1.3.jar --build-arg TYPESETSH_FILE=typesetsh.phar --platform linux/amd64 --platform linux/amd64 -t printcss-live-backend .
    ```
 
 3. Create SSL Cert:
